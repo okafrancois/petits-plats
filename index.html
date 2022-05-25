@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="">
+    <link rel="stylesheet" href="styles/style.css">
+    <title>Les Petits Plats</title>
+</head>
+<body>
+<header>
+    <a class="logo" href="index.html">
+        <svg aria-hidden="true">
+            <use xlink:href="assets/icon-lib.svg#full-logo"></use>
+        </svg>
+    </a>
+</header>
+<main>
+    <form class="filters container">
+        <div class="filters__search search">
+            <label class="search__bar">
+                <input type="text" name="search" placeholder="Rechercher une recette">
+                <button type="submit">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="assets/icon-lib.svg#search"></use>
+                    </svg>
+                </button>
+            </label>
+        </div>
+        <label class="filters__options options">
+            <label class="options__select">
+                <select name="ingredients" class="bg-blue">
+                    <option value="all">Toutes les catégories</option>
+                    <option value="starter">Entrée</option>
+                    <option value="main">Plat principal</option>
+                    <option value="dessert">Dessert</option>
+                    <option value="drink">Boisson</option>
+                </select>
+            </label>
+            <label class="options__select">
+                <select name="equipments" class="bg-green">
+                    <option value="all">Toutes les catégories</option>
+                    <option value="starter">Entrée</option>
+                    <option value="main">Plat principal</option>
+                    <option value="dessert">Dessert</option>
+                    <option value="drink">Boisson</option>
+                </select>
+            </label>
+            <label class="options__select">
+                <select name="tools" class="bg-red">
+                    <option value="all">Toutes les catégories</option>
+                    <option value="starter">Entrée</option>
+                    <option value="main">Plat principal</option>
+                    <option value="dessert">Dessert</option>
+                    <option value="drink">Boisson</option>
+                </select>
+            </label>
+        </label>
+    </form>
+    <section class="container">
+        <ul class="recipes">
+            <!--recipe cards will be injected here-->
+        </ul>
+    </section>
+</main>
+
+<script src="scripts/index.js" type="module"></script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "root": true,
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module",
+    "parser": "babel-eslint"
+  },
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "extends": [
+    "eslint:recommended"
+  ],
+  "rules": {
+    "indent": ["warn", 2, { "SwitchCase": 1 }],
+    "multiline-ternary": ["warn", "always-multiline"],
+    "object-curly-newline": ["warn", {
+      "ObjectExpression": "always",
+      "ObjectPattern": { "multiline": true },
+      "ImportDeclaration": "never",
+      "ExportDeclaration": { "multiline": true, "minProperties": 3 }
+    }]
+  }
+}

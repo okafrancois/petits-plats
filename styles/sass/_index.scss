@@ -1,0 +1,94 @@
+@import "config";
+/*
+  Index
+  ---------- ---------- ---------- ---------- ----------
+  • Header
+*/
+
+/*
+  • Header
+  ---------- ---------- ---------- ---------- ----------
+*/
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: to-rem(40);
+  padding-bottom: to-rem(15);
+
+  .logo {
+    max-width: 270px;
+
+    svg{
+      height: 90px;
+      width: auto;
+    }
+  }
+}
+
+.search {
+  &__bar {
+    display: flex;
+    position: relative;
+    background: get-color('light-gray');
+    padding: to-rem(15);
+    border-radius: $default-border-radius;
+    color: get-color('gray');
+
+    button {
+      border: none;
+      background: none;
+      margin-left: to-rem(5);
+
+      svg {
+        width: to-rem(30);
+        height: to-rem(30);
+      }
+    }
+
+    input {
+      border: none;
+      background: none;
+      width: 100%;
+      padding: 0;
+      font-size: to-rem(16);
+      color: #000;
+      outline: none;
+
+      &::placeholder {
+        color: get-color('gray');
+      }
+    }
+  }
+}
+
+.options {
+  display: flex;
+  margin-top: to-rem(10);
+  gap: to-rem(10) to-rem(10);
+
+  &__select {
+    select {
+      border: none;
+      border-radius: $default-border-radius;
+      padding: to-rem(20) to-rem(10);
+      color: #fff;
+      font-size: to-rem(18);
+    }
+  }
+}
+
+.recipes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: to-rem(50) to-rem(50);
+
+  @media all and (max-width: 992px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media all and (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}

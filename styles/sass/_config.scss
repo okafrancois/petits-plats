@@ -1,0 +1,107 @@
+/*
+  Index
+  ---------- ---------- ---------- ---------- ----------
+  • Functions
+  • Colors
+  • UI sets
+  • Base
+*/
+
+
+/*
+  • Functions
+  ---------- ---------- ---------- ---------- ----------
+*/
+
+//convert a number into rem
+@function to-rem($pxValue) {
+  @return #{$pxValue / 16}rem;
+}
+
+//return a color from palette variable
+@function get-color($color) {
+  @return map-get($palette, $color);
+}
+
+
+/*
+  • Colors
+  ---------- ---------- ---------- ---------- ----------
+*/
+
+$palette: (
+        "primary": #D04F4F,
+        "blue": #3282F7,
+        "green": #68D9A4,
+        "red": #ED6454,
+        "light-gray": #E7E7E7,
+        "gray": #C7BEBE,
+);
+
+/*
+  • UI sets
+  ---------- ---------- ---------- ---------- ----------
+*/
+
+$default-border-radius: 5px;
+
+
+/*
+  • Base
+  ---------- ---------- ---------- ---------- ----------
+*/
+
+body {
+  font-family: Roboto, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+img,
+svg {
+  max-width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+.container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 1rem;
+  overflow-x: hidden;
+}
+
+.icon {
+  width: to-rem(20);
+  height: to-rem(20);
+}
+
+.bg-primary {
+  background-color: get-color('primary');
+}
+
+.bg-red {
+  background-color: get-color('red');
+}
+
+.bg-blue {
+  background-color: get-color('blue');
+}
+
+.bg-green {
+  background-color: get-color('green');
+}

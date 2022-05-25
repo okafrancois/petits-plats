@@ -1,0 +1,378 @@
+@charset "UTF-8";
+/*
+  Index
+  ---------- ---------- ---------- ---------- ----------
+  • Functions
+  • Colors
+  • UI sets
+  • Base
+*/
+/*
+  • Functions
+  ---------- ---------- ---------- ---------- ----------
+*/
+/*
+  • Colors
+  ---------- ---------- ---------- ---------- ----------
+*/
+/*
+  • UI sets
+  ---------- ---------- ---------- ---------- ----------
+*/
+/*
+  • Base
+  ---------- ---------- ---------- ---------- ----------
+*/
+body {
+  font-family: Roboto, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+img,
+svg {
+  max-width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+.container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 1rem;
+  overflow-x: hidden;
+}
+
+.icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.bg-primary {
+  background-color: #D04F4F;
+}
+
+.bg-red {
+  background-color: #ED6454;
+}
+
+.bg-blue {
+  background-color: #3282F7;
+}
+
+.bg-green {
+  background-color: #68D9A4;
+}
+
+/*
+  Index
+  ---------- ---------- ---------- ---------- ----------
+  • Functions
+  • Colors
+  • UI sets
+  • Base
+*/
+/*
+  • Functions
+  ---------- ---------- ---------- ---------- ----------
+*/
+/*
+  • Colors
+  ---------- ---------- ---------- ---------- ----------
+*/
+/*
+  • UI sets
+  ---------- ---------- ---------- ---------- ----------
+*/
+/*
+  • Base
+  ---------- ---------- ---------- ---------- ----------
+*/
+body {
+  font-family: Roboto, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+img,
+svg {
+  max-width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+.container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 1rem;
+  overflow-x: hidden;
+}
+
+.icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.bg-primary {
+  background-color: #D04F4F;
+}
+
+.bg-red {
+  background-color: #ED6454;
+}
+
+.bg-blue {
+  background-color: #3282F7;
+}
+
+.bg-green {
+  background-color: #68D9A4;
+}
+
+/*
+  Index
+  ---------- ---------- ---------- ---------- ----------
+  • Base
+*/
+.recipe-card__container {
+  display: flex;
+  flex-wrap: wrap;
+  overflow: hidden;
+  border-radius: 5px;
+}
+.recipe-card__cover {
+  background: #C7BEBE;
+  width: 100%;
+  aspect-ratio: 2/1;
+}
+.recipe-card__content {
+  padding: 1.25rem;
+  background: #E7E7E7;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 10px;
+  width: 100%;
+}
+.recipe-card__title {
+  width: calc(70% - 5px);
+  font-size: 1.125rem;
+  font-weight: 400;
+}
+.recipe-card__duration {
+  width: calc(30% - 5px);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.3125rem;
+  font-weight: 500;
+  font-size: 1.125rem;
+}
+.recipe-card__ingredients, .recipe-card__description {
+  width: calc(50% - 5px);
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+.recipe-card__ingredients-name {
+  font-weight: 500;
+}
+.recipe-card__description {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  /* number of lines to show */
+  -webkit-box-orient: vertical;
+  max-height: 100px;
+}
+
+/*
+  Index
+  ---------- ---------- ---------- ---------- ----------
+  • Functions
+  • Colors
+  • UI sets
+  • Base
+*/
+/*
+  • Functions
+  ---------- ---------- ---------- ---------- ----------
+*/
+/*
+  • Colors
+  ---------- ---------- ---------- ---------- ----------
+*/
+/*
+  • UI sets
+  ---------- ---------- ---------- ---------- ----------
+*/
+/*
+  • Base
+  ---------- ---------- ---------- ---------- ----------
+*/
+body {
+  font-family: Roboto, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+img,
+svg {
+  max-width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+.container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 1rem;
+  overflow-x: hidden;
+}
+
+.icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.bg-primary {
+  background-color: #D04F4F;
+}
+
+.bg-red {
+  background-color: #ED6454;
+}
+
+.bg-blue {
+  background-color: #3282F7;
+}
+
+.bg-green {
+  background-color: #68D9A4;
+}
+
+/*
+  Index
+  ---------- ---------- ---------- ---------- ----------
+  • Header
+*/
+/*
+  • Header
+  ---------- ---------- ---------- ---------- ----------
+*/
+header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 2.5rem;
+  padding-bottom: 0.9375rem;
+}
+header .logo {
+  max-width: 270px;
+}
+header .logo svg {
+  height: 90px;
+  width: auto;
+}
+
+.search__bar {
+  display: flex;
+  position: relative;
+  background: #E7E7E7;
+  padding: 0.9375rem;
+  border-radius: 5px;
+  color: #C7BEBE;
+}
+.search__bar button {
+  border: none;
+  background: none;
+  margin-left: 0.3125rem;
+}
+.search__bar button svg {
+  width: 1.875rem;
+  height: 1.875rem;
+}
+.search__bar input {
+  border: none;
+  background: none;
+  width: 100%;
+  padding: 0;
+  font-size: 1rem;
+  color: #000;
+  outline: none;
+}
+.search__bar input::placeholder {
+  color: #C7BEBE;
+}
+
+.options {
+  display: flex;
+  margin-top: 0.625rem;
+  gap: 0.625rem 0.625rem;
+}
+.options__select select {
+  border: none;
+  border-radius: 5px;
+  padding: 1.25rem 0.625rem;
+  color: #fff;
+  font-size: 1.125rem;
+}
+
+.recipes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3.125rem 3.125rem;
+}
+@media all and (max-width: 992px) {
+  .recipes {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media all and (max-width: 768px) {
+  .recipes {
+    grid-template-columns: 1fr;
+  }
+}
+
+/*# sourceMappingURL=style.css.map */
