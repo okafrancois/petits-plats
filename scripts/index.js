@@ -8,18 +8,30 @@ import RecipeCard from "./templates/RecipeCard.js";
   • Base
 */
 
-const recipesContainer = document.querySelector(".recipes");
+class App {
+    constructor(data) {
+        
+        this.recipes = data;
+    }
 
-function getRecipes() {
-    return recipes;
+    get recipesContainer() {
+        return document.querySelector(".recipes");
+    }
+
+    renderRecipes(data) {
+        data = data || this.recipes;
+        data
+            .map(recipe => new BasicRecipe(recipe))
+            .forEach(recipe => {
+                const template = RecipeCard(recipe);
+                this.recipesContainer.innerHTML += template;
+            });
+    }
+
+    init() {
+        this.renderRecipes(this.recipes);
+    }
 }
 
-const recipesData = getRecipes();
-
-recipesData
-    .map(recipe => new BasicRecipe(recipe))
-    .forEach(recipe => {
-        const template = RecipeCard(recipe);
-        recipesContainer.innerHTML += template;
-    });
-
+const app = new App(recipes);
+app.init();

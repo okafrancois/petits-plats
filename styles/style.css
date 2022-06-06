@@ -204,13 +204,17 @@ ul {
   font-weight: 500;
 }
 .recipe-card__description {
+  word-break: break-word;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
+  line-height: 16px;
+  /* fallback */
+  max-height: 80px;
+  /* fallback */
   -webkit-line-clamp: 5;
   /* number of lines to show */
   -webkit-box-orient: vertical;
-  max-height: 100px;
 }
 
 /*
