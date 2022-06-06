@@ -29,6 +29,7 @@ class App {
     }
 
     init() {
+        const searchInput = document.querySelector(".filters .search__bar");
         this.renderRecipes(this.recipes);
     }
 }
