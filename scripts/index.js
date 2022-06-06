@@ -1,6 +1,7 @@
 import {recipes} from "../data/recipes.js";
 import BasicRecipe from "./models/BasicRecipe.js";
 import RecipeCard from "./templates/RecipeCard.js";
+import {initSearch} from "./utils/search.js";
 
 /*
   Index
