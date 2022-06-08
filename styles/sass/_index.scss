@@ -65,6 +65,7 @@ header {
 
 .options {
   display: flex;
+  align-items: flex-start;
   margin-top: to-rem(10);
   gap: to-rem(10) to-rem(10);
 

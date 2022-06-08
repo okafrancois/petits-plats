@@ -53,6 +53,7 @@ $default-border-radius: 5px;
 
 body {
   font-family: Roboto, sans-serif;
+  overflow-x: hidden;
 }
 
 * {
@@ -78,11 +79,23 @@ ul {
   padding: 0;
 }
 
+input,
+button {
+  border: none;
+  background: none;
+  color: inherit;
+}
+
+input {
+  &:focus {
+    outline: none;
+  }
+}
+
 .container {
   max-width: 1240px;
   margin: 0 auto;
   padding: 1rem;
-  overflow-x: hidden;
 }
 
 .icon {

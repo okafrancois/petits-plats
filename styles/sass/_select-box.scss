@@ -1,0 +1,88 @@
+@use 'config' as *;
+
+.select-box {
+    position: relative;
+    color: #fff;
+    border-radius: $default-border-radius;
+    max-width: fit-content;
+
+    &__trigger {
+        display: inline-block;
+        position: relative;
+        width: 100%;
+        
+        input {
+            cursor: pointer;
+            padding: to-rem(25) to-rem(40) to-rem(25) to-rem(15);
+            min-width: to-rem(170);
+            text-align: left;
+            width: 100%;
+        }
+
+        // add arrow
+        &::after {
+            content: '';
+            position: absolute;
+            right: to-rem(15);
+            top: 50%;
+            transform: translateY(-50%) rotate(45deg);
+            transition: transform 0.3s;
+            width: to-rem(5);
+            height: to-rem(5);
+            border-top: to-rem(2) solid get-color('white');
+            border-left: to-rem(2) solid get-color('white');
+            z-index: 2;
+        }
+    }
+
+    &__options {
+        display: none;
+        flex-direction: column;
+        flex-wrap: wrap;
+        max-height: to-rem(330);
+        gap: to-rem(10) 0;
+        padding: to-rem(10) 0;
+        min-width: fit-content;
+    }
+
+    &__option {
+        cursor: pointer;
+        position: relative;
+        padding: to-rem(0) to-rem(15);
+        min-width: to-rem(170);
+        font-size: to-rem(16);
+        text-align: left;
+        text-transform: capitalize;
+    }
+
+    &__inputs {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1;
+        background: get-color('primary');
+        border-radius: $default-border-radius;
+        padding: to-rem(5) to-rem(10) to-rem(10);
+    }
+}
+
+.--is-open.select-box {
+    .select-box {
+        &__inputs {
+            display: block;
+        }
+
+        &__options {
+            display: flex;
+        }
+
+        &__trigger {
+            &::after {
+                transform: translateY(-50%) rotate(225deg);
+            }
+        }
+    }
+}

@@ -19,7 +19,7 @@
     <form class="filters container">
         <div class="filters__search search">
             <label class="search__bar">
-                <input type="text" name="search" placeholder="Rechercher une recette">
+                <input type="search" name="search" placeholder="Rechercher une recette">
                 <button type="submit">
                     <svg class="icon" aria-hidden="true">
                         <use xlink:href="assets/icon-lib.svg#search"></use>
@@ -27,35 +27,32 @@
                 </button>
             </label>
         </div>
-        <label class="filters__options options">
-            <label class="options__select">
-                <select name="ingredients" class="bg-blue">
-                    <option value="all">Toutes les catégories</option>
-                    <option value="starter">Entrée</option>
-                    <option value="main">Plat principal</option>
-                    <option value="dessert">Dessert</option>
-                    <option value="drink">Boisson</option>
-                </select>
-            </label>
-            <label class="options__select">
-                <select name="equipments" class="bg-green">
-                    <option value="all">Toutes les catégories</option>
-                    <option value="starter">Entrée</option>
-                    <option value="main">Plat principal</option>
-                    <option value="dessert">Dessert</option>
-                    <option value="drink">Boisson</option>
-                </select>
-            </label>
-            <label class="options__select">
-                <select name="tools" class="bg-red">
-                    <option value="all">Toutes les catégories</option>
-                    <option value="starter">Entrée</option>
-                    <option value="main">Plat principal</option>
-                    <option value="dessert">Dessert</option>
-                    <option value="drink">Boisson</option>
-                </select>
-            </label>
-        </label>
+        <div class="filters__options options">
+            <div data-type="ingredients" class="select-box options__select bg-blue">
+                <label class="select-box__trigger">
+                    <input class="select-box__value" type="text" placeholder="Rechercher un ingrédient" aria-labelledby="custom-select__title" data-value="default" role="button" aria-haspopup="listbox" aria-expanded="false">
+                </label>
+                <div class="select-box__options" role="listbox">
+                    <button id="default-option2" class="select-box__option" data-value="default" aria-label="Tout" aria-selected="true">Ingredient</button>
+                </div>
+            </div>
+            <div data-type="appliance" class="select-box options__select bg-blue">
+                <label class="select-box__trigger">
+                    <input class="select-box__value" type="text" placeholder="Appareil" aria-labelledby="custom-select__title" data-value="default" role="button" aria-haspopup="listbox" aria-expanded="false">
+                </label>
+                <div class="select-box__options" role="listbox">
+                    <button id="default-option3" class="select-box__option" data-value="default" aria-label="Tout" aria-selected="true">Ingredient</button>
+                </div>
+            </div>
+            <div data-type="ustensils" class="select-box options__select bg-blue">
+                <label class="select-box__trigger">
+                    <input class="select-box__value" type="text" placeholder="Ustensils" aria-labelledby="custom-select__title" data-value="default" role="button" aria-haspopup="listbox" aria-expanded="false">
+                </label>
+                <div class="select-box__options" role="listbox">
+                    <button id="default-option4" class="select-box__option" data-value="default" aria-label="Tout" aria-selected="true">Ingredient</button>
+                </div>
+            </div>
+        </div>
     </form>
     <section class="container">
         <ul class="recipes">
