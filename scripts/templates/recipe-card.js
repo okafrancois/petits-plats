@@ -4,7 +4,7 @@ const RecipeCard = (recipe) => (
   `<li class="recipes__item recipe-card">
                 <div class="recipe-card__container">
                     <div class="recipe-card__cover">
-                        <img src="https://picsum.photos/400/200?random=${getRandomInt(1,20)}" alt="${recipe.title}" class="recipe-card__cover-image">
+                        <img src="https://picsum.photos/id/${getRandomInt(1,85)}/400/200?" alt="${recipe.title}" class="recipe-card__cover-image">
                     </div>
                     <div class="recipe-card__content">
                         <h3 class="recipe-card__title">${recipe.name}</h3>

@@ -1,19 +1,43 @@
 import {recipes} from "../data/recipes.js";
 import Recipe from "./models/Recipe.js";
 import RecipeCard from "./templates/recipe-card.js";
-import TagBox from "./utils/tag-box.js";
+import TagBox from "./components/tag-box.js";
 import {filterItem} from "./templates/filter-item.js";
-import {matchAtLeastOne, normalizedText, removeDuplicates} from "./utils/util-functions.js";
+import {mapItems, matchAtLeastOne, normalizedText, removeDuplicates} from "./utils/util-functions.js";
 import tagItem from "./templates/tag-item.js";
-
-// dev purpose
-console.clear();
+import "./components/tag-box.js";
 
 /*
   Index
   ---------- ---------- ---------- ---------- ----------
-  • Base
+  • Config
+  • Component class
+  • Init & Export
 */
+
+/*
+ • Config
+ ---------- ---------- ---------- ---------- ----------
+ */
+
+// dev purpose
+console.clear();
+
+// add custom emit method
+Object.prototype.emit = function(eventName, data) {
+  this.dispatchEvent(new CustomEvent(eventName, {detail: data}));
+}
+
+// add custom listen method
+Object.prototype.on = function(eventName, callback) {
+  this.removeEventListener(eventName, callback);
+  this.addEventListener(eventName, callback);
+}
+
+/*
+ • Component class
+ ---------- ---------- ---------- ---------- ----------
+ */
 
 class App {
   constructor(data) {
@@ -121,33 +145,29 @@ chercher « tarte aux pommes », « poisson », etc.</p>`;
 
     // map the current search results to the recipe card template
     // add results recipes to the container after mapping them to the recipe card template
-    this.searchResults
-      .map(recipe => new Recipe(recipe))
-      .forEach(recipe => {
-        const template = RecipeCard(recipe);
-        this.recipesContainer.innerHTML += template;
-      });
+    this.recipesContainer.innerHTML += mapItems(this.searchResults.map(recipe => new Recipe(recipe)), RecipeCard)
   }
 
   displayActiveTags() {
     const tagsContainer = this.activeTagsContainer;
+    const {ingredients, appliance, ustensils} = this.activeFilters;
 
     tagsContainer.innerHTML = "";
 
-    if (this.activeFilters.ingredients.length > 0) {
-      tagsContainer.innerHTML += this.activeFilters.ingredients.map(item => tagItem(item, 'ingredients')).join("\n")
+    if (ingredients.length > 0) {
+      tagsContainer.innerHTML += mapItems(ingredients, tagItem, ["ingredients"]);
     }
 
-    if (this.activeFilters.appliance.length > 0) {
-      tagsContainer.innerHTML += this.activeFilters.appliance.map(item => tagItem(item, 'appliance')).join("\n");
+    if (appliance.length > 0) {
+      tagsContainer.innerHTML += mapItems(appliance, tagItem, ["appliance"]);
     }
 
-    if (this.activeFilters.ustensils.length > 0) {
-      tagsContainer.innerHTML += this.activeFilters.ustensils.map(item => tagItem(item, 'ustensils')).join("\n");
+    if (ustensils.length > 0) {
+      tagsContainer.innerHTML += mapItems(ustensils, tagItem, ["ustensils"]);
     }
 
     tagsContainer.querySelectorAll(".active-tags__remove").forEach(tag => {
-      tag.addEventListener("click", this.onTagClick.bind(this));}
+      tag.on("click", this.onTagClick.bind(this));}
     )
   }
 
@@ -177,16 +197,15 @@ chercher « tarte aux pommes », « poisson », etc.</p>`;
       optionsBlock.innerHTML = "";
 
       // get the data that corresponds to the filter type in the available filters & map them to the filter option template
-      const options = this.availableFilters[filter.dataset.type].map(item => filterItem(item));
+      const options = this.availableFilters[filter.dataset.type]
 
       // add options to the container
-      optionsBlock.innerHTML = options.join("\n");
+      optionsBlock.innerHTML = mapItems(options, filterItem);
 
 
       // add event listener to each option
       optionsBlock.querySelectorAll("button").forEach(option => {
-        option.removeEventListener("click", this.onFilterOptionClick.bind(this));
-        option.addEventListener("click", this.onFilterOptionClick.bind(this));
+        option.on("click", this.onFilterOptionClick.bind(this));
       })
     })
   }
@@ -263,14 +282,23 @@ chercher « tarte aux pommes », « poisson », etc.</p>`;
       this.reloadContent();
     }
 
-    this.searchInput.addEventListener("input", (e) => {
+    this.searchInput.on("input", (e) => {
       const searchTerm = normalizedText(e.target.value.toLowerCase());
       if (searchTerm.length > 2) {
         this.updateActiveFilters("searchTerm", searchTerm);
       }
     })
+
+    const select = document.querySelector('select-box');
+    console.log(select);
+
   }
 }
+
+/*
+ • Init
+ ---------- ---------- ---------- ---------- ----------
+ */
 
 const app = new App(recipes);
 app.init();

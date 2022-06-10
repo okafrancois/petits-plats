@@ -10,6 +10,8 @@
   ---------- ---------- ---------- ---------- ----------
 */
 
+import tagItem from "../templates/tag-item.js";
+
 function trapFocusIntoModal(modal, previousFocused, customFocusableElements) {
   let focusableItems = modal.querySelectorAll('button, a, video, input, select, textarea');
 
@@ -109,7 +111,10 @@ function matchAtLeastOne(array1, array2) {
   })
 
   return result
+}
 
+function mapItems(items, template, params = []) {
+  return items.map(item => template(item, ...params)).join('\n');
 }
 
 /*
@@ -118,5 +123,10 @@ function matchAtLeastOne(array1, array2) {
 */
 
 export {
-  trapFocusIntoModal, removeDuplicates, normalizedText, getRandomInt, matchAtLeastOne
+  trapFocusIntoModal,
+  removeDuplicates,
+  normalizedText,
+  getRandomInt,
+  matchAtLeastOne,
+  mapItems
 };
