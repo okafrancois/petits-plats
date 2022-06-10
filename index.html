@@ -20,36 +20,48 @@
         <div class="filters__search search">
             <label class="search__bar">
                 <input type="search" name="search" placeholder="Rechercher une recette">
-                <button type="submit">
+                <span class="search__bar-icon">
                     <svg class="icon" aria-hidden="true">
                         <use xlink:href="assets/icon-lib.svg#search"></use>
                     </svg>
-                </button>
+                </span>
             </label>
         </div>
+        <div class="active-tags">
+            <ul class="active-tags__container">
+                <li class="active-tags__item bg-blue">
+                    <span>Tag name</span>
+                    <button class="active-tags__remove">
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="assets/icon-lib.svg#remove"></use>
+                        </svg>
+                    </button>
+                </li>
+            </ul>
+        </div>
         <div class="filters__options options">
-            <div data-type="ingredients" class="select-box options__select bg-blue">
-                <label class="select-box__trigger">
-                    <input class="select-box__value" type="text" placeholder="Rechercher un ingrédient" aria-labelledby="custom-select__title" data-value="default" role="button" aria-haspopup="listbox" aria-expanded="false">
+            <div data-type="ingredients" class="tag-box options__select bg-blue">
+                <label class="tag-box__trigger">
+                    <input class="tag-box__value" type="search" placeholder="Rechercher un ingrédient" aria-labelledby="custom-select__title" role="button" aria-haspopup="listbox" aria-expanded="false">
                 </label>
-                <div class="select-box__options" role="listbox">
-                    <button id="default-option2" class="select-box__option" data-value="default" aria-label="Tout" aria-selected="true">Ingredient</button>
+                <div class="tag-box__container" role="listbox">
+                    <!-- Content will be added dynamically-->
                 </div>
             </div>
-            <div data-type="appliance" class="select-box options__select bg-blue">
-                <label class="select-box__trigger">
-                    <input class="select-box__value" type="text" placeholder="Appareil" aria-labelledby="custom-select__title" data-value="default" role="button" aria-haspopup="listbox" aria-expanded="false">
+            <div data-type="appliance" class="tag-box options__select bg-green">
+                <label class="tag-box__trigger">
+                    <input class="tag-box__value" type="search" placeholder="Rechercher un appareil" aria-labelledby="custom-select__title" role="button" aria-haspopup="listbox" aria-expanded="false">
                 </label>
-                <div class="select-box__options" role="listbox">
-                    <button id="default-option3" class="select-box__option" data-value="default" aria-label="Tout" aria-selected="true">Ingredient</button>
+                <div class="tag-box__container" role="listbox">
+                    <!-- Content will be added dynamically-->
                 </div>
             </div>
-            <div data-type="ustensils" class="select-box options__select bg-blue">
-                <label class="select-box__trigger">
-                    <input class="select-box__value" type="text" placeholder="Ustensils" aria-labelledby="custom-select__title" data-value="default" role="button" aria-haspopup="listbox" aria-expanded="false">
+            <div data-type="ustensils" class="tag-box options__select bg-red">
+                <label class="tag-box__trigger">
+                    <input class="tag-box__value" type="search" placeholder="Rechercher un ustensils" aria-labelledby="custom-select__title" role="button" aria-haspopup="listbox" aria-expanded="false">
                 </label>
-                <div class="select-box__options" role="listbox">
-                    <button id="default-option4" class="select-box__option" data-value="default" aria-label="Tout" aria-selected="true">Ingredient</button>
+                <div class="tag-box__container" role="listbox">
+                    <!-- Content will be added dynamically-->
                 </div>
             </div>
         </div>

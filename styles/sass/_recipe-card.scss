@@ -12,6 +12,7 @@
     flex-wrap: wrap;
     overflow: hidden;
     border-radius: $default-border-radius;
+    height: 100%;
   }
   &__cover {
     background: get-color('gray');

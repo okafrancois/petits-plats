@@ -1,6 +1,6 @@
 @use 'config' as *;
 
-.select-box {
+.tag-box {
     position: relative;
     color: #fff;
     border-radius: $default-border-radius;
@@ -10,16 +10,13 @@
         display: inline-block;
         position: relative;
         width: 100%;
-        
+
         input {
-            cursor: pointer;
             padding: to-rem(25) to-rem(40) to-rem(25) to-rem(15);
-            min-width: to-rem(170);
             text-align: left;
             width: 100%;
         }
 
-        // add arrow
         &::after {
             content: '';
             position: absolute;
@@ -35,17 +32,18 @@
         }
     }
 
-    &__options {
+    &__container {
         display: none;
         flex-direction: column;
         flex-wrap: wrap;
-        max-height: to-rem(330);
+        max-height: to-rem(340);
         gap: to-rem(10) 0;
         padding: to-rem(10) 0;
-        min-width: fit-content;
+        min-width: max-content;
+        overflow-x: auto;
     }
 
-    &__option {
+    &__item {
         cursor: pointer;
         position: relative;
         padding: to-rem(0) to-rem(15);
@@ -54,28 +52,11 @@
         text-align: left;
         text-transform: capitalize;
     }
-
-    &__inputs {
-        display: none;
-        flex-direction: column;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        z-index: 1;
-        background: get-color('primary');
-        border-radius: $default-border-radius;
-        padding: to-rem(5) to-rem(10) to-rem(10);
-    }
 }
 
-.--is-open.select-box {
-    .select-box {
-        &__inputs {
-            display: block;
-        }
-
-        &__options {
+.--is-open.tag-box {
+    .tag-box {
+        &__container {
             display: flex;
         }
 

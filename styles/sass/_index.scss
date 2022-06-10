@@ -63,19 +63,61 @@ header {
   }
 }
 
+.active-tags {
+  margin: to-rem(10) 0;
+  &__container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: to-rem(10) to-rem(10);
+  }
+
+  &__item {
+    border-radius: $default-border-radius;
+    color: #fff;
+    padding: to-rem(10);
+    display: flex;
+    align-items: center;
+    text-transform: capitalize;
+
+    &[data-type="ingredients"] {
+      background: get-color('blue');
+    }
+
+    &[data-type="appliance"] {
+      background: get-color('green');
+    }
+
+    &[data-type="ustensils"] {
+      background: get-color('red');
+    }
+
+    button {
+      margin-left: to-rem(10);
+      cursor: pointer;
+    }
+
+    svg {
+      pointer-events: none;
+    }
+  }
+}
+
 .options {
   display: flex;
   align-items: flex-start;
+  flex-wrap: wrap;
   margin-top: to-rem(10);
   gap: to-rem(10) to-rem(10);
 
   &__select {
-    select {
-      border: none;
-      border-radius: $default-border-radius;
-      padding: to-rem(20) to-rem(10);
-      color: #fff;
-      font-size: to-rem(18);
+    border: none;
+    border-radius: $default-border-radius;
+    padding: 0;
+    color: #fff;
+    font-size: to-rem(18);
+
+    @media all and (max-width: 768px) {
+      min-width: 100%;
     }
   }
 }
@@ -83,7 +125,8 @@ header {
 .recipes {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: to-rem(50) to-rem(50);
+  grid-auto-rows: 1fr;
+  gap: to-rem(30) to-rem(30);
 
   @media all and (max-width: 992px) {
     grid-template-columns: repeat(2, 1fr);

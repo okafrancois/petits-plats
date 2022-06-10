@@ -1,7 +1,11 @@
+import {getRandomInt} from "../utils/util-functions.js";
+
 const RecipeCard = (recipe) => (
   `<li class="recipes__item recipe-card">
-                <div class="recipe-card__container" href="#">
-                    <div class="recipe-card__cover"></div>
+                <div class="recipe-card__container">
+                    <div class="recipe-card__cover">
+                        <img src="https://picsum.photos/400/200?random=${getRandomInt(1,20)}" alt="${recipe.title}" class="recipe-card__cover-image">
+                    </div>
                     <div class="recipe-card__content">
                         <h3 class="recipe-card__title">${recipe.name}</h3>
                         <div class="recipe-card__duration">
@@ -12,8 +16,8 @@ const RecipeCard = (recipe) => (
                         </div>
                         <ul class="recipe-card__ingredients">
                             ${recipe.ingredients
-                                .map(ingredient => IngredientItem(ingredient))
-                                .join('')}
+    .map(ingredient => IngredientItem(ingredient))
+    .join('')}
                         </ul>
                         <div class="recipe-card__description">
                             <p>${recipe.description}</p>

@@ -1,4 +1,4 @@
-class BasicRecipe {
+class Recipe {
   constructor(data) {
     this.name = data.name;
     this.duration = `${data.time} min`;
@@ -7,4 +7,4 @@ class BasicRecipe {
   }
 }
 
-export default BasicRecipe;
+export default Recipe;
