@@ -1,11 +1,10 @@
 import {recipes} from "../data/recipes.js";
 import Recipe from "./models/Recipe.js";
 import RecipeCard from "./templates/recipe-card.js";
-import TagBox from "./components/tag-box.js";
-import {filterItem} from "./templates/filter-item.js";
 import {mapItems, matchAtLeastOne, normalizedText, removeDuplicates} from "./utils/util-functions.js";
 import tagItem from "./templates/tag-item.js";
 import "./components/tag-box.js";
+import initSelectBoxe from "./components/select-box.js";
 
 /*
   Index
@@ -25,7 +24,9 @@ console.clear();
 
 // add custom emit method
 Object.prototype.emit = function(eventName, data) {
-  this.dispatchEvent(new CustomEvent(eventName, {detail: data}));
+  this.dispatchEvent(new CustomEvent(eventName, {
+    detail: data
+  }));
 }
 
 // add custom listen method
@@ -62,7 +63,7 @@ class App {
   }
 
   get filterTypesBlock() {
-    return document.querySelectorAll(".filters .options__select");
+    return document.querySelectorAll(".filters .select-box");
   }
 
   get activeTagsContainer() {
@@ -77,7 +78,7 @@ class App {
     }
 
     if (!this.activeFilters[filterType].includes(filterValue)) {
-        this.activeFilters[filterType].push(filterValue);
+      this.activeFilters[filterType].push(filterValue);
       this.updateResultData();
     }
   }
@@ -85,7 +86,7 @@ class App {
   removeActiveTag(filterType, filterValue) {
     // remove the filter option from the active filters
     this.activeFilters[filterType] = this.activeFilters[filterType].filter(item => {
-        return item !== filterValue;
+      return item !== filterValue;
     });
 
     this.updateResultData();
@@ -183,37 +184,25 @@ chercher « tarte aux pommes », « poisson », etc.</p>`;
   displayFiltersType() {
     // init select box for each filter type
     this.filterTypesBlock.forEach(filter => {
-      new TagBox(filter);
-    })
-  }
-
-  displayFiltersOptions() {
-
-    this.filterTypesBlock.forEach(filter => {
-      // get the container of the filter options
-      const optionsBlock = filter.querySelector("[role='listbox']");
-
-      // clear the container before rendering the new options
-      optionsBlock.innerHTML = "";
-
       // get the data that corresponds to the filter type in the available filters & map them to the filter option template
       const options = this.availableFilters[filter.dataset.type]
 
-      // add options to the container
-      optionsBlock.innerHTML = mapItems(options, filterItem);
+      const filterBox = initSelectBoxe(filter, {
+        list: options,
+        selected: this.activeFilters[filter.dataset.type],
+        searchable: true,
+      });
 
-
-      // add event listener to each option
-      optionsBlock.querySelectorAll("button").forEach(option => {
-        option.on("click", this.onFilterOptionClick.bind(this));
-      })
+      filterBox.onItemClick(this.onFilterOptionClick.bind(this));
     })
   }
 
   onFilterOptionClick(e) {
     e.preventDefault();
-    const filterType = e.target.closest(".options__select").dataset.type;
+    const filterType = e.target.closest(".select-box").dataset.type;
     const filterValue = e.target.dataset.value;
+
+    e.target.classList.toggle("--selected");
 
     this.updateActiveFilters(filterType, filterValue);
   }
@@ -240,28 +229,28 @@ chercher « tarte aux pommes », « poisson », etc.</p>`;
 
     // remove recipes that don't match the search term
     if (filters.searchTerm !== null && filters.searchTerm !== "") {
-        results = this.getSearchResults(filters.searchTerm, results);
+      results = this.getSearchResults(filters.searchTerm, results);
     }
 
     // remove recipes that don't match active ingredients list
     if (filters.ingredients.length > 0) {
-        results = results.filter(recipe => {
-            return matchAtLeastOne(filters.ingredients.map(item => normalizedText(item)), recipe.ingredients.map(item => normalizedText(item.ingredient)));
-        });
+      results = results.filter(recipe => {
+        return matchAtLeastOne(filters.ingredients.map(item => normalizedText(item)), recipe.ingredients.map(item => normalizedText(item.ingredient)));
+      });
     }
 
     // remove recipes that don't match active appliance list
     if (filters.appliance.length > 0) {
-        results = results.filter(recipe => {
-            return filters.appliance.some(item => item === normalizedText(recipe.appliance));
-        })
+      results = results.filter(recipe => {
+        return filters.appliance.some(item => item === normalizedText(recipe.appliance));
+      })
     }
 
     // remove recipes that don't match active ustensils list
     if (filters.ustensils.length > 0) {
-        results = results.filter(recipe => {
-            return matchAtLeastOne(filters.ustensils.map(item => normalizedText(item)), recipe.ustensils.map(item => normalizedText(item)));
-        })
+      results = results.filter(recipe => {
+        return matchAtLeastOne(filters.ustensils.map(item => normalizedText(item)), recipe.ustensils.map(item => normalizedText(item)));
+      })
     }
 
     return results;
@@ -271,7 +260,6 @@ chercher « tarte aux pommes », « poisson », etc.</p>`;
     this.displayRecipesCards();
     this.displayActiveTags();
     this.displayFiltersType();
-    this.displayFiltersOptions();
   }
 
   init() {
@@ -283,15 +271,11 @@ chercher « tarte aux pommes », « poisson », etc.</p>`;
     }
 
     this.searchInput.on("input", (e) => {
-      const searchTerm = normalizedText(e.target.value.toLowerCase());
+      const searchTerm = normalizedText(e.target.value);
       if (searchTerm.length > 2) {
         this.updateActiveFilters("searchTerm", searchTerm);
       }
     })
-
-    const select = document.querySelector('select-box');
-    console.log(select);
-
   }
 }
 

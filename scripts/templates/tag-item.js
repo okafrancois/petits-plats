@@ -1,5 +1,5 @@
 const tagItem = (tag, type) => {
-    return `<li class="active-tags__item" data-type="${type}" data-value="${tag}">
+  return `<li class="active-tags__item" data-type="${type}" data-value="${tag}">
                     <span>${tag}</span>
                     <button class="active-tags__remove">
                         <svg class="icon" aria-hidden="true">

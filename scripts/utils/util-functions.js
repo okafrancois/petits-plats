@@ -10,8 +10,6 @@
   ---------- ---------- ---------- ---------- ----------
 */
 
-import tagItem from "../templates/tag-item.js";
-
 function trapFocusIntoModal(modal, previousFocused, customFocusableElements) {
   let focusableItems = modal.querySelectorAll('button, a, video, input, select, textarea');
 
@@ -47,14 +45,11 @@ function trapFocusIntoModal(modal, previousFocused, customFocusableElements) {
     }
   }
 
-  // remove previous listener to ensure double listening
-  removeEventListener('keydown', _onShiftTab)
-
   // handle keydown event
-  document.addEventListener('keydown', _onShiftTab);
+  document.on('keydown', _onShiftTab);
 
   // set focus on focus element before modal open & remove keydown event listener on modal
-  modal.addEventListener('closed', () => {
+  modal.on('closed', () => {
     if (previousFocused) {
       previousFocused.focus()
     }
