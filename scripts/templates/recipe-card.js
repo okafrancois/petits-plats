@@ -1,7 +1,7 @@
 import {getRandomInt} from "../utils/util-functions.js";
 
 const RecipeCard = (recipe) => (
-  `<li class="recipes__item recipe-card">
+  `<li class="recipes__item recipe-card" data-id="${recipe.id}">
                 <div class="recipe-card__container">
                     <div class="recipe-card__cover">
                         <img src="https://picsum.photos/id/${getRandomInt(1,85)}/400/200?" alt="${recipe.title}" class="recipe-card__cover-image">
@@ -16,8 +16,8 @@ const RecipeCard = (recipe) => (
                         </div>
                         <ul class="recipe-card__ingredients">
                             ${recipe.ingredients
-    .map(ingredient => IngredientItem(ingredient))
-    .join('')}
+                            .map(ingredient => IngredientItem(ingredient))
+                            .join('')}
                         </ul>
                         <div class="recipe-card__description">
                             <p>${recipe.description}</p>

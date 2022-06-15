@@ -4,6 +4,7 @@ class Recipe {
     this.duration = `${data.time} min`;
     this.ingredients = data.ingredients;
     this.description = data.description;
+    this.id = data.id;
   }
 }
 
