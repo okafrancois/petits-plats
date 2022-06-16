@@ -123,13 +123,8 @@ class App {
   }
 
   updateResultData() {
-    if (this.activeFilters.ingredients.length > 0 || this.activeFilters.appliance.length > 0 || this.activeFilters.ustensils.length > 0) {
-      // search with search term and advanced filters
-      this.searchResults = this.getAdvancedSearchResults(this.activeFilters, this.recipes);
-    } else {
-      // search with search term only
-      this.searchResults = this.getSearchResults(this.activeFilters.searchTerm, this.recipes);
-    }
+    const test = this.activeFilters.ingredients.length > 0 || this.activeFilters.appliance.length > 0 || this.activeFilters.ustensils.length > 0;
+    this.searchResults = test ? this.getAdvancedSearchResults(this.activeFilters, this.recipes) : this.getBasicSearchResults(this.activeFilters.searchTerm, this.recipes);
 
     this.updateAvailableFilters();
     this.refreshActiveFilters();
@@ -141,17 +136,9 @@ class App {
   }
 
   displayRecipesCards() {
-    // display custom message if no results
-    if (this.searchResults.length === 0) {
-      this.recipesContainer.innerHTML = `<p class="no-results">Aucune recette ne correspond à votre critère... vous pouvez
-chercher « tarte aux pommes », « poisson », etc.</p>`;
-
-      return;
-    }
-
     // map the current search results to the recipe card template
     // add results recipes to the container after mapping them to the recipe card template
-    this.recipesContainer.innerHTML += mapItems(this.recipes.map(recipe => new Recipe(recipe)), RecipeCard)
+    this.recipesContainer.innerHTML = mapItems(this.recipes.map(recipe => new Recipe(recipe)), RecipeCard)
   }
 
   displayActiveTags() {
@@ -213,8 +200,8 @@ chercher « tarte aux pommes », « poisson », etc.</p>`;
   }
 
   // perform a search with the given search term
-  getSearchResults(searchTerm, data) {
-    if (searchTerm === null || searchTerm === "") {
+  getBasicSearchResults(searchTerm, data) {
+    if (searchTerm === null || searchTerm === "" || searchTerm.length < 3) {
       return data.map(recipe => recipe.id);
     }
 
@@ -242,7 +229,9 @@ chercher « tarte aux pommes », « poisson », etc.</p>`;
 
     // remove recipes that don't match the search term
     if (filters.searchTerm !== null && filters.searchTerm !== "") {
-      results = this.getSearchResults(filters.searchTerm, results);
+      const basicSearchResult = this.getBasicSearchResults(filters.searchTerm, results);
+
+      results = basicSearchResult.map(recipeId => results.find(recipe => recipe.id === recipeId));
     }
 
     // remove recipes that don't match active ingredients list
@@ -271,6 +260,16 @@ chercher « tarte aux pommes », « poisson », etc.</p>`;
 
   // add or remove hidden class to recipe card depending on search results
   applyFilters(filters) {
+    this.displayRecipesCards();
+
+    // display custom message if no results
+    if (this.searchResults.length === 0) {
+      this.recipesContainer.innerHTML = `<p class="no-results">Aucune recette ne correspond à votre critère... vous pouvez
+chercher « tarte aux pommes », « poisson », etc.</p>`;
+
+      return;
+    }
+
     this.recipesBlocks.forEach(recipe => {
       const recipeId = parseInt(recipe.dataset.id);
 
@@ -300,9 +299,7 @@ chercher « tarte aux pommes », « poisson », etc.</p>`;
 
     this.searchInput.on("input", (e) => {
       const searchTerm = normalizedText(e.target.value);
-      if (searchTerm.length > 2) {
-        this.updateActiveFilters("searchTerm", searchTerm);
-      }
+      this.updateActiveFilters("searchTerm", searchTerm);
     })
   }
 }
