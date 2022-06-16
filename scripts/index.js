@@ -4,7 +4,7 @@ import RecipeCard from "./templates/recipe-card.js";
 import {mapItems, matchAtLeastOne, normalizedText, removeDuplicates} from "./utils/util-functions.js";
 import tagItem from "./templates/tag-item.js";
 import "./components/tag-box.js";
-import initSelectBoxe from "./components/select-box.js";
+import {initSelectBox} from "./components/select-box.js";
 
 /*
   Index
@@ -42,8 +42,8 @@ Object.prototype.on = function(eventName, callback) {
 
 class App {
   constructor(data) {
-    this._recipes = data;
-    this.searchResults = [...this._recipes];
+    this.recipes = data;
+    this.searchResults = [this.recipes.map(recipe => recipe.id)];
     this.availableFilters = {
     };
     this.activeFilters = {
@@ -56,6 +56,10 @@ class App {
 
   get recipesContainer() {
     return document.querySelector(".recipes");
+  }
+
+  get recipesBlocks() {
+    return this.recipesContainer.querySelectorAll(".recipes__item");
   }
 
   get searchInput() {
@@ -99,7 +103,9 @@ class App {
       ustensils: []
     };
 
-    this.searchResults.forEach(recipe => {
+    this.searchResults.forEach(recipeId => {
+      const recipe = this.recipes.find(recipeItem => recipeItem.id === recipeId);
+
       const ingredients = recipe.ingredients.map(item => item.ingredient.toLowerCase());
       const appliance = recipe.appliance.toLowerCase();
       const ustensils = recipe.ustensils.map(item => item.toLowerCase());
@@ -118,9 +124,11 @@ class App {
 
   updateResultData() {
     if (this.activeFilters.ingredients.length > 0 || this.activeFilters.appliance.length > 0 || this.activeFilters.ustensils.length > 0) {
-      this.searchResults = this.getAdvancedSearchResults(this.activeFilters, this._recipes);
+      // search with search term and advanced filters
+      this.searchResults = this.getAdvancedSearchResults(this.activeFilters, this.searchResults);
     } else {
-      this.searchResults = this.getSearchResults(this.activeFilters.searchTerm, this._recipes);
+      // search with search term only
+      this.searchResults = this.getSearchResults(this.activeFilters.searchTerm, this.recipes);
     }
 
     this.updateAvailableFilters();
@@ -133,9 +141,6 @@ class App {
   }
 
   displayRecipesCards() {
-    // clear the container before rendering the new cards
-    this.recipesContainer.innerHTML = "";
-
     // display custom message if no results
     if (this.searchResults.length === 0) {
       this.recipesContainer.innerHTML = `<p class="no-results">Aucune recette ne correspond à votre critère... vous pouvez
@@ -146,7 +151,7 @@ chercher « tarte aux pommes », « poisson », etc.</p>`;
 
     // map the current search results to the recipe card template
     // add results recipes to the container after mapping them to the recipe card template
-    this.recipesContainer.innerHTML += mapItems(this.searchResults.map(recipe => new Recipe(recipe)), RecipeCard)
+    this.recipesContainer.innerHTML += mapItems(this.recipes.map(recipe => new Recipe(recipe)), RecipeCard)
   }
 
   displayActiveTags() {
@@ -181,13 +186,13 @@ chercher « tarte aux pommes », « poisson », etc.</p>`;
     this.removeActiveTag(filterType, filterValue);
   }
 
-  displayFiltersType() {
+  initAdvancedFilters() {
     // init select box for each filter type
     this.filterTypesBlock.forEach(filter => {
       // get the data that corresponds to the filter type in the available filters & map them to the filter option template
       const options = this.availableFilters[filter.dataset.type]
 
-      const filterBox = initSelectBoxe(filter, {
+      const filterBox = initSelectBox(filter, {
         list: options,
         selected: this.activeFilters[filter.dataset.type],
         searchable: true,
@@ -207,23 +212,31 @@ chercher « tarte aux pommes », « poisson », etc.</p>`;
     this.updateActiveFilters(filterType, filterValue);
   }
 
+  // perform a search with the given search term
   getSearchResults(searchTerm, data) {
     if (searchTerm === null || searchTerm === "") {
-      return data;
+      return data.map(recipe => recipe.id);
     }
+
+    const results = [];
 
     const term = normalizedText(searchTerm);
 
     // remove recipes whose name, ingredients and description content do not match the search term
-    return  data.filter(recipe => {
+    data.forEach(recipe => {
       const titleTest = normalizedText(recipe.name).includes(term) || term.includes(normalizedText(recipe.name));
       const ingredientsTest = matchAtLeastOne([term], recipe.ingredients.map(item => normalizedText(item.ingredient)));
       const descriptionTest = normalizedText(recipe.description).includes(term);
 
-      return titleTest || ingredientsTest || descriptionTest;
+      if (titleTest || ingredientsTest || descriptionTest) {
+        results.push(recipe.id);
+      }
     });
+
+    return results;
   }
 
+  // perform a search with the given search term and advanced filters
   getAdvancedSearchResults(filters, data) {
     let results = data;
 
@@ -234,21 +247,24 @@ chercher « tarte aux pommes », « poisson », etc.</p>`;
 
     // remove recipes that don't match active ingredients list
     if (filters.ingredients.length > 0) {
-      results = results.filter(recipe => {
+      results = results.filter(recipeId => {
+        const recipe = this.recipes.find(item => item.id === recipeId);
         return matchAtLeastOne(filters.ingredients.map(item => normalizedText(item)), recipe.ingredients.map(item => normalizedText(item.ingredient)));
       });
     }
 
     // remove recipes that don't match active appliance list
     if (filters.appliance.length > 0) {
-      results = results.filter(recipe => {
+      results = results.filter(recipeId => {
+        const recipe = this.recipes.find(item => item.id === recipeId);
         return filters.appliance.some(item => item === normalizedText(recipe.appliance));
       })
     }
 
     // remove recipes that don't match active ustensils list
     if (filters.ustensils.length > 0) {
-      results = results.filter(recipe => {
+      results = results.filter(recipeId => {
+        const recipe = this.recipes.find(item => item.id === recipeId);
         return matchAtLeastOne(filters.ustensils.map(item => normalizedText(item)), recipe.ustensils.map(item => normalizedText(item)));
       })
     }
@@ -256,18 +272,33 @@ chercher « tarte aux pommes », « poisson », etc.</p>`;
     return results;
   }
 
+  // add or remove hidden class to recipe card depending on search results
+  applyFilters(filters) {
+    this.recipesBlocks.forEach(recipe => {
+      const recipeId = parseInt(recipe.dataset.id);
+
+      // add hidden class to recipes item that the id is not in the results list
+      if (filters.includes(recipeId)) {
+        recipe.classList.remove("--is-hidden");
+      } else {
+        recipe.classList.add("--is-hidden");
+      }
+    })
+  }
+
   reloadContent() {
-    this.displayRecipesCards();
+    this.applyFilters(this.searchResults);
     this.displayActiveTags();
-    this.displayFiltersType();
+    this.initAdvancedFilters();
   }
 
   init() {
+    this.displayRecipesCards();
+
     if (this.searchInput.value.length > 2) {
       this.updateActiveFilters("searchTerm", normalizedText(this.searchInput.value));
     } else {
-      this.updateResultData();
-      this.reloadContent();
+      this.updateActiveFilters("searchTerm", "");
     }
 
     this.searchInput.on("input", (e) => {

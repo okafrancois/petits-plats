@@ -5,6 +5,7 @@
     color: #fff;
     border-radius: $default-border-radius;
     max-width: fit-content;
+    overflow: hidden;
 
     &__trigger {
         display: inline-block;
@@ -63,6 +64,8 @@
 }
 
 .--is-open.select-box {
+    max-width: calc(100% - 2 * (277px + 0.625rem));
+    flex: max-content;
     .select-box {
         &__list {
             display: flex;

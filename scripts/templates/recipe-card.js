@@ -16,8 +16,8 @@ const RecipeCard = (recipe) => (
                         </div>
                         <ul class="recipe-card__ingredients">
                             ${recipe.ingredients
-                            .map(ingredient => IngredientItem(ingredient))
-                            .join('')}
+    .map(ingredient => IngredientItem(ingredient))
+    .join('')}
                         </ul>
                         <div class="recipe-card__description">
                             <p>${recipe.description}</p>

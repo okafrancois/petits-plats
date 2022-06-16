@@ -68,6 +68,7 @@ class SelectBox {
   close() {
     this.root.classList.remove(MODIFIERS.isOpen);
     this.trigger.setAttribute('aria-expanded', 'false');
+    this.searchInput.value = '';
     this.root.emit('closed');
   }
 
@@ -98,7 +99,7 @@ class SelectBox {
   connectedCallback() {
     this.renderItems();
 
-    this.trigger.on('click', this.open.bind(this));
+    this.searchInput.on('focus', this.open.bind(this));
 
     this.root.on('opened', () => {
       trapFocusIntoModal(this.root, null);
@@ -170,9 +171,9 @@ function onSearchInput(e) {
   ---------- ---------- ---------- ---------- ----------
 */
 
-function initSelectBoxe(root, data) {
+function initSelectBox(root, data) {
   return new SelectBox(root, data);
 }
 
 
-export default initSelectBoxe;
+export {initSelectBox};

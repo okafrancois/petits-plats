@@ -69,4 +69,8 @@
     -webkit-box-orient: vertical;
   }
 
+  &.--is-hidden {
+    display: none;
+  }
+
 }

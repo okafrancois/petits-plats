@@ -239,61 +239,8 @@ input:focus {
   /* number of lines to show */
   -webkit-box-orient: vertical;
 }
-
-.tag-box {
-  position: relative;
-  color: #fff;
-  border-radius: 5px;
-  max-width: fit-content;
-}
-.tag-box__trigger {
-  display: inline-block;
-  position: relative;
-  width: 100%;
-}
-.tag-box__trigger input {
-  padding: 1.5625rem 2.5rem 1.5625rem 0.9375rem;
-  text-align: left;
-  width: 100%;
-}
-.tag-box__trigger::after {
-  content: "";
-  position: absolute;
-  right: 0.9375rem;
-  top: 50%;
-  transform: translateY(-50%) rotate(45deg);
-  transition: transform 0.3s;
-  width: 0.3125rem;
-  height: 0.3125rem;
-  border-top: 0.125rem solid;
-  border-left: 0.125rem solid;
-  z-index: 2;
-}
-.tag-box__container {
+.recipe-card.--is-hidden {
   display: none;
-  flex-direction: column;
-  flex-wrap: wrap;
-  max-height: 21.25rem;
-  gap: 0.625rem 0;
-  padding: 0.625rem 0;
-  min-width: max-content;
-  overflow-x: auto;
-}
-.tag-box__item {
-  cursor: pointer;
-  position: relative;
-  padding: 0rem 0.9375rem;
-  min-width: 10.625rem;
-  font-size: 1rem;
-  text-align: left;
-  text-transform: capitalize;
-}
-
-.--is-open.tag-box .tag-box__container {
-  display: flex;
-}
-.--is-open.tag-box .tag-box__trigger::after {
-  transform: translateY(-50%) rotate(225deg);
 }
 
 .select-box {
@@ -301,6 +248,7 @@ input:focus {
   color: #fff;
   border-radius: 5px;
   max-width: fit-content;
+  overflow: hidden;
 }
 .select-box__trigger {
   display: inline-block;
@@ -351,6 +299,10 @@ input:focus {
   font-size: 1rem;
 }
 
+.--is-open.select-box {
+  max-width: calc(100% - 2 * (277px + 0.625rem));
+  flex: max-content;
+}
 .--is-open.select-box .select-box__list {
   display: flex;
 }
@@ -572,6 +524,22 @@ header .logo svg {
 @media all and (max-width: 768px) {
   .recipes {
     grid-template-columns: 1fr;
+  }
+}
+
+.filters-container {
+  position: relative;
+  width: 100%;
+  height: 70px;
+}
+@media all and (max-width: 881px) {
+  .filters-container {
+    height: 140px;
+  }
+}
+@media all and (max-width: 770px) {
+  .filters-container {
+    height: 210px;
   }
 }
 
