@@ -125,7 +125,7 @@ class App {
   updateResultData() {
     if (this.activeFilters.ingredients.length > 0 || this.activeFilters.appliance.length > 0 || this.activeFilters.ustensils.length > 0) {
       // search with search term and advanced filters
-      this.searchResults = this.getAdvancedSearchResults(this.activeFilters, this.searchResults);
+      this.searchResults = this.getAdvancedSearchResults(this.activeFilters, this.recipes);
     } else {
       // search with search term only
       this.searchResults = this.getSearchResults(this.activeFilters.searchTerm, this.recipes);
@@ -247,29 +247,26 @@ chercher « tarte aux pommes », « poisson », etc.</p>`;
 
     // remove recipes that don't match active ingredients list
     if (filters.ingredients.length > 0) {
-      results = results.filter(recipeId => {
-        const recipe = this.recipes.find(item => item.id === recipeId);
+      results = results.filter(recipe => {
         return matchAtLeastOne(filters.ingredients.map(item => normalizedText(item)), recipe.ingredients.map(item => normalizedText(item.ingredient)));
       });
     }
 
     // remove recipes that don't match active appliance list
     if (filters.appliance.length > 0) {
-      results = results.filter(recipeId => {
-        const recipe = this.recipes.find(item => item.id === recipeId);
+      results = results.filter(recipe => {
         return filters.appliance.some(item => item === normalizedText(recipe.appliance));
       })
     }
 
     // remove recipes that don't match active ustensils list
     if (filters.ustensils.length > 0) {
-      results = results.filter(recipeId => {
-        const recipe = this.recipes.find(item => item.id === recipeId);
+      results = results.filter(recipe => {
         return matchAtLeastOne(filters.ustensils.map(item => normalizedText(item)), recipe.ustensils.map(item => normalizedText(item)));
       })
     }
 
-    return results;
+    return results.map(recipe => recipe.id);
   }
 
   // add or remove hidden class to recipe card depending on search results
