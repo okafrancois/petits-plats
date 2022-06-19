@@ -123,8 +123,8 @@ class App {
   }
 
   updateResultData() {
-    const test = this.activeFilters.ingredients.length > 0 || this.activeFilters.appliance.length > 0 || this.activeFilters.ustensils.length > 0;
-    this.searchResults = test ? this.getAdvancedSearchResults(this.activeFilters, this.recipes) : this.getBasicSearchResults(this.activeFilters.searchTerm, this.recipes);
+    const isAdvanceFilter = this.activeFilters.ingredients.length > 0 || this.activeFilters.appliance.length > 0 || this.activeFilters.ustensils.length > 0;
+    this.searchResults = isAdvanceFilter ? this.getAdvancedSearchResults(this.activeFilters, this.recipes) : this.getBasicSearchResults(this.activeFilters.searchTerm, this.recipes);
 
     this.updateAvailableFilters();
     this.refreshActiveFilters();
@@ -141,36 +141,24 @@ class App {
     this.recipesContainer.innerHTML = mapItems(this.recipes.map(recipe => new Recipe(recipe)), RecipeCard)
   }
 
-  displayActiveTags() {
-    const tagsContainer = this.activeTagsContainer;
-    const {ingredients, appliance, ustensils} = this.activeFilters;
+  displayActiveTagBlock(type, value) {
+    const activeTagBlock = tagItem(value, type);
+    this.activeTagsContainer.innerHTML += activeTagBlock;
 
-    tagsContainer.innerHTML = "";
-
-    if (ingredients.length > 0) {
-      tagsContainer.innerHTML += mapItems(ingredients, tagItem, ["ingredients"]);
-    }
-
-    if (appliance.length > 0) {
-      tagsContainer.innerHTML += mapItems(appliance, tagItem, ["appliance"]);
-    }
-
-    if (ustensils.length > 0) {
-      tagsContainer.innerHTML += mapItems(ustensils, tagItem, ["ustensils"]);
-    }
-
-    tagsContainer.querySelectorAll(".active-tags__remove").forEach(tag => {
-      tag.on("click", this.onTagClick.bind(this));}
-    )
+    this.activeTagsContainer.querySelector(".active-tags__remove").on("click", this.onActiveTagClick.bind(this));
   }
 
-  onTagClick(e) {
+  onActiveTagClick(e) {
+    e.preventDefault();
+
+    // get the tag block concerned
     const tagBlock = e.target.closest(".active-tags__item");
 
-    const filterType = tagBlock.dataset.type;
-    const filterValue = tagBlock.dataset.value;
+    // remove the tag block from the active tags container
+    this.activeTagsContainer.removeChild(tagBlock);
 
-    this.removeActiveTag(filterType, filterValue);
+    // remove tag value from the active filters
+    this.removeActiveTag(tagBlock.dataset.type, tagBlock.dataset.value);
   }
 
   initAdvancedFilters() {
@@ -197,9 +185,10 @@ class App {
     e.target.classList.toggle("--selected");
 
     this.updateActiveFilters(filterType, filterValue);
+    this.displayActiveTagBlock(filterType, filterValue);
   }
 
-  // perform a search with the given search term
+  // perform a search with the given search term and recipes ids that match the search term
   getBasicSearchResults(searchTerm, data) {
     if (searchTerm === null || searchTerm === "" || searchTerm.length < 3) {
       return data.map(recipe => recipe.id);
@@ -223,7 +212,7 @@ class App {
     return results;
   }
 
-  // perform a search with the given search term and advanced filters
+  // perform a search with the given search term and advanced filters and return the recipes ids that match
   getAdvancedSearchResults(filters, data) {
     let results = data;
 
@@ -282,9 +271,9 @@ chercher « tarte aux pommes », « poisson », etc.</p>`;
     })
   }
 
+
   reloadContent() {
     this.applyFilters(this.searchResults);
-    this.displayActiveTags();
     this.initAdvancedFilters();
   }
 

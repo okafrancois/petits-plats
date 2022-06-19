@@ -25,11 +25,11 @@ class TagBox {
     this.tagBoxTrigger.on('click', this.openTagBox.bind(this));
 
     // close tag box when clicking outside of it
-    document.on('click', (e) => {
+    /**document.on('click', (e) => {
       if(e.target !== this.root && !this.root.contains(e.target)) {
         this.closeTagBox.bind(this)();
       }
-    })
+    })**/
 
     this.root.on('opened', () => {
       // trap focus inside tag box when it's opened

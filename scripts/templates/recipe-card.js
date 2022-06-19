@@ -1,11 +1,7 @@
-import {getRandomInt} from "../utils/util-functions.js";
-
 const RecipeCard = (recipe) => (
   `<li class="recipes__item recipe-card" data-id="${recipe.id}">
                 <div class="recipe-card__container">
-                    <div class="recipe-card__cover">
-                        <img src="https://picsum.photos/id/${getRandomInt(1,85)}/400/200?" alt="${recipe.title}" class="recipe-card__cover-image">
-                    </div>
+                    <div class="recipe-card__cover"></div>
                     <div class="recipe-card__content">
                         <h3 class="recipe-card__title">${recipe.name}</h3>
                         <div class="recipe-card__duration">
