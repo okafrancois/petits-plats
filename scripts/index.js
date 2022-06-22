@@ -106,9 +106,9 @@ class App {
     this.searchResults.forEach(recipeId => {
       const recipe = this.recipes.find(recipeItem => recipeItem.id === recipeId);
 
-      const ingredients = recipe.ingredients.map(item => item.ingredient.toLowerCase());
-      const appliance = recipe.appliance.toLowerCase();
-      const ustensils = recipe.ustensils.map(item => item.toLowerCase());
+      const ingredients = recipe.ingredients.map(item => normalizedText(item.ingredient));
+      const appliance = normalizedText(recipe.appliance);
+      const ustensils = recipe.ustensils.map(item => normalizedText(item));
 
       filters.ingredients.push(...ingredients);
       filters.appliance.push(appliance);
@@ -145,7 +145,7 @@ class App {
     const activeTagBlock = tagItem(value, type);
     this.activeTagsContainer.innerHTML += activeTagBlock;
 
-    this.activeTagsContainer.querySelector(".active-tags__remove").on("click", this.onActiveTagClick.bind(this));
+    this.activeTagsContainer.emit("new-tag-added")
   }
 
   onActiveTagClick(e) {
@@ -289,6 +289,12 @@ chercher « tarte aux pommes », « poisson », etc.</p>`;
     this.searchInput.on("input", (e) => {
       const searchTerm = normalizedText(e.target.value);
       this.updateActiveFilters("searchTerm", searchTerm);
+    })
+
+    this.activeTagsContainer.on("new-tag-added", () => {
+      this.activeTagsContainer.querySelectorAll("button").forEach(button => {
+        button.on("click", this.onActiveTagClick.bind(this));
+      })
     })
   }
 }
