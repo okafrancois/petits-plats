@@ -89,7 +89,6 @@ function getRandomInt(min, max) {
 */
 
 // return true if there is at least one element in array 2 who match one element in array 1
-
 function matchAtLeastOne(array1, array2) {
   let result = false;
 
@@ -104,6 +103,7 @@ function matchAtLeastOne(array1, array2) {
   return result
 }
 
+// return an array of items formatted with the provided template
 function mapItems(items, template, params = []) {
   return items.map(item => template(item, ...params)).join('\n');
 }

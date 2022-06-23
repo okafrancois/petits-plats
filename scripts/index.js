@@ -44,14 +44,8 @@ class App {
   constructor(data) {
     this.recipes = data;
     this.searchResults = [this.recipes.map(recipe => recipe.id)];
-    this.availableFilters = {
-    };
-    this.activeFilters = {
-      searchTerm: null,
-      ingredients: [],
-      appliance: [],
-      ustensils: []
-    };
+    this.availableFilters = {};
+    this.activeFilters = {searchTerm: null, ingredients: [], appliance: [], ustensils: []};
   }
 
   get recipesContainer() {
@@ -74,6 +68,7 @@ class App {
     return document.querySelector(".active-tags__container");
   }
 
+  // change the value off the filter options
   updateActiveFilters(filterType, filterValue) {
     if (filterType === "searchTerm") {
       this.activeFilters.searchTerm = filterValue;
@@ -87,15 +82,7 @@ class App {
     }
   }
 
-  removeActiveTag(filterType, filterValue) {
-    // remove the filter option from the active filters
-    this.activeFilters[filterType] = this.activeFilters[filterType].filter(item => {
-      return item !== filterValue;
-    });
-
-    this.updateResultData();
-  }
-
+  // update available filters based on the current search results
   updateAvailableFilters() {
     const filters = {
       ingredients: [],
@@ -122,6 +109,7 @@ class App {
     this.availableFilters = filters;
   }
 
+  // perform the search and update the search results
   updateResultData() {
     const isAdvanceFilter = this.activeFilters.ingredients.length > 0 || this.activeFilters.appliance.length > 0 || this.activeFilters.ustensils.length > 0;
     this.searchResults = isAdvanceFilter ? this.getAdvancedSearchResults(this.activeFilters, this.recipes) : this.getBasicSearchResults(this.activeFilters.searchTerm, this.recipes);
@@ -131,16 +119,19 @@ class App {
     this.reloadContent();
   }
 
+  // update search term filter value
   refreshSearchTermFilter() {
     this.activeFilters.searchTerm = normalizedText(this.searchInput.value);
   }
 
+  // add recipes cards to the recipes container
   displayRecipesCards() {
     // map the current search results to the recipe card template
     // add results recipes to the container after mapping them to the recipe card template
     this.recipesContainer.innerHTML = mapItems(this.recipes.map(recipe => new Recipe(recipe)), RecipeCard)
   }
 
+  // add active tag block to the active tags container
   displayActiveTagBlock(type, value) {
     const activeTagBlock = tagItem(value, type);
     this.activeTagsContainer.innerHTML += activeTagBlock;
@@ -148,7 +139,18 @@ class App {
     this.activeTagsContainer.emit("new-tag-added")
   }
 
-  onActiveTagClick(e) {
+  // remove tag value from the active filters
+  removeActiveTag(filterType, filterValue) {
+    // remove the filter option from the active filters
+    this.activeFilters[filterType] = this.activeFilters[filterType].filter(item => {
+      return item !== filterValue;
+    });
+
+    this.updateResultData();
+  }
+
+  // remove active tag from the active filters array and the active tags blocks
+  onRemoveActiveTagClick(e) {
     e.preventDefault();
 
     // get the tag block concerned
@@ -161,6 +163,7 @@ class App {
     this.removeActiveTag(tagBlock.dataset.type, tagBlock.dataset.value);
   }
 
+  // add filters options blocks to the select box
   addFiltersOptions(filtersBlock) {
     const options = this.availableFilters[filtersBlock.dataset.type];
     const selectedOptions = this.activeFilters[filtersBlock.dataset.type];
@@ -168,6 +171,7 @@ class App {
     filtersBlock.addOptions(options, selectedOptions);
   }
 
+  // ad the filter value to the active filters array
   onFilterOptionClick(e) {
     e.preventDefault();
     const filterType = e.target.closest(".select-box").dataset.type;
@@ -258,7 +262,7 @@ class App {
     }
   }
 
-
+  // apply filters to the recipes and fire the filters changes event
   reloadContent() {
     this.applyFilters(this.searchResults);
     this.filterTypesBlock.forEach(filtersBlock => {
@@ -269,26 +273,11 @@ class App {
   init() {
     const selectBoxes = document.querySelectorAll("select-box");
     const searchForm = document.querySelector(".filters");
-    searchForm.addEventListener("submit", e => {
-        e.preventDefault();
-    })
 
+    // add recipes cards to the page
     this.displayRecipesCards();
 
-    this.searchInput.addEventListener("focus", e => {
-      const _onEnterPress = (event) => {
-        if (event.key === "Enter") {
-          event.preventDefault();
-        }
-      }
-
-      document.addEventListener("keydown", _onEnterPress);
-
-      this.searchInput.addEventListener("blur", e => {
-          document.removeEventListener("keydown", _onEnterPress);
-      })
-    });
-
+    // update search term value
     if (this.searchInput.value.length > 2) {
       this.updateActiveFilters("searchTerm", normalizedText(this.searchInput.value));
     } else {
@@ -297,6 +286,7 @@ class App {
 
     initSelectBoxes();
 
+    // add advance filters options to the select boxes
     selectBoxes.forEach(selectBox => {
       selectBox.itemsClickHandler = this.onFilterOptionClick.bind(this);
 
@@ -307,14 +297,36 @@ class App {
       })
     })
 
+    // update the search term when the user changes it
     this.searchInput.on("input", (e) => {
       const searchTerm = normalizedText(e.target.value);
       this.updateActiveFilters("searchTerm", searchTerm);
     })
 
+    // prevent the form from submitting
+    searchForm.addEventListener("submit", e => {
+      e.preventDefault();
+    })
+
+    // prevent form from submitting when enter is pressed
+    this.searchInput.addEventListener("focus", e => {
+      const _onEnterPress = (event) => {
+        if (event.key === "Enter") {
+          event.preventDefault();
+        }
+      }
+
+      document.addEventListener("keydown", _onEnterPress);
+
+      this.searchInput.addEventListener("blur", () => {
+        document.removeEventListener("keydown", _onEnterPress);
+      })
+    });
+
+    // add remove tag event listener to the newly created active tag
     this.activeTagsContainer.on("new-tag-added", () => {
       this.activeTagsContainer.querySelectorAll("button").forEach(button => {
-        button.on("click", this.onActiveTagClick.bind(this));
+        button.on("click", this.onRemoveActiveTagClick.bind(this));
       })
     })
   }
