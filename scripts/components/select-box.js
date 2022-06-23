@@ -84,7 +84,6 @@ class SelectBox extends HTMLElement {
   }
 
   refreshSelectedOptions(items, selectedItems) {
-    console.log('refreshSelectedOptions', items, selectedItems);
     this.itemsBlocks.forEach(item => {
       if (items.includes(item.dataset.value) && !selectedItems.includes(item.dataset.value)) {
         item.classList.remove(MODIFIERS.isDisabled);

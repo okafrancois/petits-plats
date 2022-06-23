@@ -287,7 +287,7 @@ input:focus {
   cursor: pointer;
   position: relative;
   padding: 0rem 0.9375rem;
-  min-width: 10.625rem;
+  min-width: max-content;
   font-size: 1rem;
   text-align: left;
   text-transform: capitalize;

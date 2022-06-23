@@ -180,33 +180,31 @@ class App {
 
   // perform a search with the given search term and recipes ids that match the search term
   getBasicSearchResults(searchTerm, data) {
+    // if the search term is empty, return all the recipes ids
     if (searchTerm === null || searchTerm === "" || searchTerm.length < 3) {
       return data.map(recipe => recipe.id);
+    } else {
+      const term = normalizedText(searchTerm);
+
+      // remove all the recipes that don't match the search term from data array
+      const filteredResults = data.filter(recipe => {
+        const isTitleMatch = normalizedText(recipe.name).includes(term) || term.includes(normalizedText(recipe.name));
+        const isIngredientsMatch = matchAtLeastOne([term], recipe.ingredients.map(item => normalizedText(item.ingredient)));
+        const isDescriptionMatch = normalizedText(recipe.description).includes(term);
+
+        return isTitleMatch || isIngredientsMatch || isDescriptionMatch;
+      })
+
+      // return the recipes ids that match the search term
+      return filteredResults.map(recipe => recipe.id);
     }
-
-    const results = [];
-
-    const term = normalizedText(searchTerm);
-
-    // remove recipes whose name, ingredients and description content do not match the search term
-    data.forEach(recipe => {
-      const titleTest = normalizedText(recipe.name).includes(term) || term.includes(normalizedText(recipe.name));
-      const ingredientsTest = matchAtLeastOne([term], recipe.ingredients.map(item => normalizedText(item.ingredient)));
-      const descriptionTest = normalizedText(recipe.description).includes(term);
-
-      if (titleTest || ingredientsTest || descriptionTest) {
-        results.push(recipe.id);
-      }
-    });
-
-    return results;
   }
 
   // perform a search with the given search term and advanced filters and return the recipes ids that match
   getAdvancedSearchResults(filters, data) {
     let results = data;
 
-    // remove recipes that don't match the search term
+    // return recipes who match the search term
     if (filters.searchTerm !== null && filters.searchTerm !== "") {
       const basicSearchResult = this.getBasicSearchResults(filters.searchTerm, results);
 
@@ -270,7 +268,26 @@ class App {
 
   init() {
     const selectBoxes = document.querySelectorAll("select-box");
+    const searchForm = document.querySelector(".filters");
+    searchForm.addEventListener("submit", e => {
+        e.preventDefault();
+    })
+
     this.displayRecipesCards();
+
+    this.searchInput.addEventListener("focus", e => {
+      const _onEnterPress = (event) => {
+        if (event.key === "Enter") {
+          event.preventDefault();
+        }
+      }
+
+      document.addEventListener("keydown", _onEnterPress);
+
+      this.searchInput.addEventListener("blur", e => {
+          document.removeEventListener("keydown", _onEnterPress);
+      })
+    });
 
     if (this.searchInput.value.length > 2) {
       this.updateActiveFilters("searchTerm", normalizedText(this.searchInput.value));

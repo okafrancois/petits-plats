@@ -50,10 +50,6 @@ function trapFocusIntoModal(modal, previousFocused, customFocusableElements) {
 
   // set focus on focus element before modal open & remove keydown event listener on modal
   modal.on('closed', () => {
-    if (previousFocused) {
-      previousFocused.focus()
-    }
-
     document.removeEventListener('keydown', _onShiftTab);
   });
 
