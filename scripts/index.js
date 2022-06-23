@@ -195,11 +195,11 @@ class App {
       const descriptionTest = normalizedText(recipe.description).includes(term);
 
       if (titleTest || ingredientsTest || descriptionTest) {
-        results.push(recipe.id);
+        results.push(recipe);
       }
     });
 
-    return results;
+    return results.map(recipe => recipe.id);
   }
 
   // perform a search with the given search term and advanced filters and return the recipes ids that match
