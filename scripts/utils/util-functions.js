@@ -99,7 +99,7 @@ function matchAtLeastOne(array1, array2) {
 
   array1.forEach(element => {
     array2.forEach(element2 => {
-      if (element2.includes(element) || element.includes(element2)) {
+      if (element2.includes(element)) {
         result = true;
       }
     })

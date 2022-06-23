@@ -139,6 +139,14 @@ header {
   @media all and (max-width: 768px) {
     grid-template-columns: 1fr;
   }
+
+  &[data-empty="true"] {
+    grid-template-columns: 1fr;
+    &::before {
+      content: "Aucune recette ne correspond à votre critère... vous pouvez chercher « tarte aux pommes », « poisson », etc.";
+      display: block;
+   }
+  }
 }
 
 .filters-container {

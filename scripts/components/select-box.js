@@ -17,7 +17,7 @@ import {mapItems, normalizedText, trapFocusIntoModal} from "../utils/util-functi
 const SELECTORS = {
   root: 'select-box',
   trigger: 'select-box__trigger',
-  searchInput: 'select-box__search-input',
+  searchInput: 'input[type="search"]',
   itemsContainer: 'select-box__list',
   item: 'select-box__item',
 };
@@ -33,22 +33,19 @@ const MODIFIERS = {
   ---------- ---------- ---------- ---------- ----------
 */
 
-class SelectBox {
-  constructor(root, data) {
-    this.root = root;
-    this.list = data.list;
-    this.selected = data.selected;
-    this.searchable = data.searchable;
-
-    this.connectedCallback();
+class SelectBox extends HTMLElement {
+  constructor() {
+    super();
+    this.rootElmt = this;
+    this.itemsClickHandler = null;
   }
 
   get trigger() {
-    return this.root.querySelector(`.${SELECTORS.trigger}`);
+    return this.rootElmt.querySelector(`.${SELECTORS.trigger}`);
   }
 
   get itemsContainer() {
-    return this.root.querySelector(`.${SELECTORS.itemsContainer}`);
+    return this.rootElmt.querySelector(`.${SELECTORS.itemsContainer}`);
   }
 
   get itemsBlocks() {
@@ -56,71 +53,72 @@ class SelectBox {
   }
 
   get searchInput() {
-    return this.root.querySelector(`.${SELECTORS.searchInput}`);
+    return this.rootElmt.querySelector(`${SELECTORS.searchInput}`);
   }
 
   open() {
-    this.root.classList.add(MODIFIERS.isOpen);
+    this.rootElmt.classList.add(MODIFIERS.isOpen);
     this.trigger.setAttribute('aria-expanded', 'true');
-    this.root.emit('opened');
+    this.rootElmt.emit('opened');
   }
 
   close() {
-    this.root.classList.remove(MODIFIERS.isOpen);
+    this.rootElmt.classList.remove(MODIFIERS.isOpen);
     this.trigger.setAttribute('aria-expanded', 'false');
     this.searchInput.value = '';
-    this.root.emit('closed');
+    this.rootElmt.emit('closed');
   }
 
-  onItemClick(callback) {
-    this.itemsBlocks.forEach(item => {
-      item.on('click', callback);
-    })
-  }
-
-  activateSearchField() {
-    this.searchInput.on('input', onSearchInput.bind(this));
-  }
-
-  renderItems() {
+  addOptions(items, selectedItems) {
     // add items to the block container
-    this.itemsContainer.innerHTML = mapItems(this.list, itemTemplate);
+    this.itemsContainer.innerHTML = mapItems(items, selectBoxItem);
 
     // add disabled class to items that are already selected
     this.itemsBlocks.forEach(item => {
-      if (this.selected.includes(item.dataset.value)) {
+      if (selectedItems.includes(item.dataset.value)) {
         item.classList.add(MODIFIERS.isDisabled);
       }
     })
 
-    this.root.emit('rendered');
+    this.rootElmt.emit('options-added');
+  }
+
+  refreshSelectedOptions(items, selectedItems) {
+    console.log('refreshSelectedOptions', items, selectedItems);
+    this.itemsBlocks.forEach(item => {
+      if (items.includes(item.dataset.value) && !selectedItems.includes(item.dataset.value)) {
+        item.classList.remove(MODIFIERS.isDisabled);
+      } else {
+        item.classList.add(MODIFIERS.isDisabled);
+      }
+    })
   }
 
   connectedCallback() {
-    this.renderItems();
+    this.searchInput.on('input', onSearchInput.bind(this));
 
-    this.searchInput.on('focus', this.open.bind(this));
+    this.rootElmt.on('options-added', () => {
+      this.itemsBlocks.forEach(item => {
+        item.on('click', this.itemsClickHandler);
+      })
+    });
 
-    this.root.on('opened', () => {
-      trapFocusIntoModal(this.root, null);
+    this.trigger.on('click', this.open.bind(this));
+
+    this.rootElmt.on('opened', () => {
+      trapFocusIntoModal(this.rootElmt, null);
 
       //close tag box when escape key is pressed
       document.on('keydown', onEscKeyPress.bind(this));
 
       // close tag box when clicking outside
       document.on('click', onClickOutside.bind(this));
-
-      if (this.searchable) {
-        this.activateSearchField();
-      }
     });
 
-    this.root.on('closed', () => {
+    this.rootElmt.on('closed', () => {
       document.removeEventListener('keydown', onEscKeyPress.bind(this));
       document.removeEventListener('click', onClickOutside.bind(this));
     })
-
-
   }
 }
 
@@ -129,7 +127,7 @@ class SelectBox {
   ---------- ---------- ---------- ---------- ----------
 */
 
-function itemTemplate(value) {
+function selectBoxItem(value) {
   return `<button id="${value}" class="${SELECTORS.item}" data-value="${value}" aria-label="${value}" aria-selected="true">${value}</button>`
 }
 
@@ -147,7 +145,7 @@ function onEscKeyPress(e) {
 }
 
 function onClickOutside(e) {
-  if(e.target !== this.root && !this.root.contains(e.target)) {
+  if(e.target !== this.rootElmt && !this.rootElmt.contains(e.target)) {
     this.close();
   }
 }
@@ -171,9 +169,8 @@ function onSearchInput(e) {
   ---------- ---------- ---------- ---------- ----------
 */
 
-function initSelectBox(root, data) {
-  return new SelectBox(root, data);
+function initSelectBoxes() {
+  customElements.define('select-box', SelectBox);
 }
 
-
-export {initSelectBox};
+export default initSelectBoxes;

@@ -526,6 +526,13 @@ header .logo svg {
     grid-template-columns: 1fr;
   }
 }
+.recipes[data-empty=true] {
+  grid-template-columns: 1fr;
+}
+.recipes[data-empty=true]::before {
+  content: "Aucune recette ne correspond à votre critère... vous pouvez chercher « tarte aux pommes », « poisson », etc.";
+  display: block;
+}
 
 .filters-container {
   position: relative;
