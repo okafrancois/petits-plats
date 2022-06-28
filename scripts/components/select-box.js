@@ -58,13 +58,11 @@ class SelectBox extends HTMLElement {
 
   open() {
     this.rootElmt.classList.add(MODIFIERS.isOpen);
-    this.trigger.setAttribute('aria-expanded', 'true');
     this.rootElmt.emit('opened');
   }
 
   close() {
     this.rootElmt.classList.remove(MODIFIERS.isOpen);
-    this.trigger.setAttribute('aria-expanded', 'false');
     this.searchInput.value = '';
     this.rootElmt.emit('closed');
   }
