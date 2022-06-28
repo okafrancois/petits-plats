@@ -44,8 +44,11 @@ class App {
   constructor(data) {
     this.recipes = data;
     this.searchResults = [this.recipes.map(recipe => recipe.id)];
-    this.availableFilters = {};
-    this.activeFilters = {searchTerm: null, ingredients: [], appliance: [], ustensils: []};
+    this.availableFilters = {
+    };
+    this.activeFilters = {
+      searchTerm: null, ingredients: [], appliance: [], ustensils: []
+    };
   }
 
   get recipesContainer() {
@@ -309,7 +312,7 @@ class App {
     })
 
     // prevent form from submitting when enter is pressed
-    this.searchInput.addEventListener("focus", e => {
+    this.searchInput.addEventListener("focus", () => {
       const _onEnterPress = (event) => {
         if (event.key === "Enter") {
           event.preventDefault();
