@@ -239,7 +239,7 @@ input:focus {
   /* number of lines to show */
   -webkit-box-orient: vertical;
 }
-.recipe-card.--is-hidden {
+.recipe-card.is-hidden {
   display: none;
 }
 
