@@ -128,10 +128,6 @@ header {
   grid-auto-rows: 1fr;
   gap: to-rem(30) to-rem(30);
 
-  .--is-disabled {
-    display: none;
-  }
-
   @media all and (max-width: 992px) {
     grid-template-columns: repeat(2, 1fr);
   }

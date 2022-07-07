@@ -53,7 +53,7 @@
         text-align: left;
         text-transform: capitalize;
 
-        &.--is-disabled {
+        &.is-disabled {
             display: none;
         }
     }
@@ -63,7 +63,7 @@
     }
 }
 
-.--is-open.select-box {
+.is-open.select-box {
     max-width: calc(100% - 2 * (277px + 0.625rem));
     flex: max-content;
     .select-box {

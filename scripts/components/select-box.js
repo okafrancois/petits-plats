@@ -23,9 +23,9 @@ const SELECTORS = {
 };
 
 const MODIFIERS = {
-  isOpen: '--is-open',
-  isSelected: '--is-selected',
-  isDisabled: '--is-disabled',
+  isOpen: 'is-open',
+  isSelected: 'is-selected',
+  isDisabled: 'is-disabled',
 }
 
 /*

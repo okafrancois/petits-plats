@@ -246,9 +246,9 @@ class App {
 
       // add hidden class to recipes item that the id is not in the results list
       if (filters.includes(recipeId)) {
-        recipe.classList.remove("--is-hidden");
+        recipe.classList.remove("is-hidden");
       } else {
-        recipe.classList.add("--is-hidden");
+        recipe.classList.add("is-hidden");
       }
     })
 

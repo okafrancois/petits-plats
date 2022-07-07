@@ -239,7 +239,7 @@ input:focus {
   /* number of lines to show */
   -webkit-box-orient: vertical;
 }
-.recipe-card.--is-hidden {
+.recipe-card.is-hidden {
   display: none;
 }
 
@@ -292,21 +292,21 @@ input:focus {
   text-align: left;
   text-transform: capitalize;
 }
-.select-box__item.--is-disabled {
+.select-box__item.is-disabled {
   display: none;
 }
 .select-box__search-input {
   font-size: 1rem;
 }
 
-.--is-open.select-box {
+.is-open.select-box {
   max-width: calc(100% - 2 * (277px + 0.625rem));
   flex: max-content;
 }
-.--is-open.select-box .select-box__list {
+.is-open.select-box .select-box__list {
   display: flex;
 }
-.--is-open.select-box .select-box__trigger::after {
+.is-open.select-box .select-box__trigger::after {
   transform: translateY(-50%) rotate(225deg);
 }
 
@@ -512,9 +512,6 @@ header .logo svg {
   grid-template-columns: repeat(3, 1fr);
   grid-auto-rows: 1fr;
   gap: 1.875rem 1.875rem;
-}
-.recipes .--is-disabled {
-  display: none;
 }
 @media all and (max-width: 992px) {
   .recipes {
